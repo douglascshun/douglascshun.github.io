@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1987f0 #0d1117;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-base-800 text-ink font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(25, 135, 240, 0.35);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0d12;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(#1987f0, #004b87);
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Card de vidro com borda neon */
+  .glass {
+    @apply relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md;
+  }
+  .glass-hover {
+    @apply transition-all duration-300 hover:border-neon/50 hover:shadow-glow;
+  }
+
+  /* Texto com brilho neon (sutil, mantém nitidez) */
+  .text-glow {
+    text-shadow: 0 0 10px rgba(25, 135, 240, 0.35);
+  }
+
+  /* Chip / badge */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04]
+      px-3 py-1 font-mono text-xs text-ink-muted;
+  }
+
+  /* Botão neon primário */
+  .btn-neon {
+    @apply relative inline-flex items-center gap-2 rounded-lg border border-neon/60 bg-neon/10
+      px-5 py-2.5 font-mono text-sm font-medium text-neon-soft transition-all duration-300
+      hover:bg-neon/20 hover:shadow-glow hover:text-white;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-lg border border-white/10 px-5 py-2.5
+      font-mono text-sm text-ink-muted transition-all duration-300 hover:border-white/30 hover:text-ink;
+  }
+
+  /* Divisor com gradiente neon */
+  .divider-neon {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(25, 135, 240, 0.6), transparent);
+  }
+
+  /* Rótulo de seção */
+  .section-label {
+    @apply font-mono text-xs uppercase tracking-[0.3em] text-neon;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-white via-neon-soft to-neon bg-clip-text text-transparent;
+  }
+  .bg-scanline {
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.18) 3px
+    );
+  }
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+    mask-image: linear-gradient(to bottom, black 70%, transparent);
+  }
+}
