@@ -97,6 +97,25 @@ export const projects: Project[] = [
     year: '2026',
     visibility: 'public',
   },
+  {
+    slug: 'pos-engenharia-software',
+    repo: 'PosEngenhariaDeSoftware',
+    title: 'Pós em Engenharia de Software',
+    tagline: {
+      pt: 'Caderno público que se atualiza sozinho a cada aula',
+      en: 'Public notebook that updates itself after every class',
+    },
+    summary: {
+      pt: 'Código Java, anotações e prints aula a aula: estruturas de dados, banco de dados, BI e Big Data, AWS, UX/UI e XP. Um agente launchd faz commit, push e regenera o README em PT/EN/ES.',
+      en: 'Java code, notes and screenshots class by class: data structures, databases, BI and Big Data, AWS, UX/UI and XP. A launchd agent commits, pushes and regenerates the README in PT/EN/ES.',
+    },
+    tech: ['Java', 'SQL', 'BI', 'AWS', 'UX/UI', 'launchd'],
+    repoUrl: 'https://github.com/douglascshun/PosEngenhariaDeSoftware',
+    accent: '#FFA500',
+    category: { pt: 'Estudo / Engenharia', en: 'Study / Engineering' },
+    year: '2026',
+    visibility: 'public',
+  },
 ]
 
 export const publicProjects = projects.filter((p) => p.visibility === 'public')

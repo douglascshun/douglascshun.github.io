@@ -15,7 +15,7 @@ const statusStyle: Record<CourseStatus, { color: string; dot: string }> = {
 
 export default function Courses() {
   const { t, L } = useLoc()
-  const [open, setOpen] = useState<string | null>('01')
+  const [open, setOpen] = useState<string | null>('eng-01')
   const statusText: Record<CourseStatus, string> = {
     done: t('courses.done'),
     progress: t('courses.progress'),
@@ -28,15 +28,21 @@ export default function Courses() {
         {modules.map((m, i) => {
           const isOpen = open === m.id
           const st = statusStyle[m.status]
+          const novoPrograma = i === 0 || L(modules[i - 1].program) !== L(m.program)
           return (
             <Reveal key={m.id} delay={i * 0.05}>
+              {novoPrograma && (
+                <div className={`mb-3 font-mono text-xs uppercase tracking-wider text-ink-faint ${i ? 'mt-8' : ''}`}>
+                  <span className="text-neon">$</span> {L(m.program)}
+                </div>
+              )}
               <div className="glass overflow-hidden rounded-2xl">
                 <button
                   onClick={() => setOpen(isOpen ? null : m.id)}
                   className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/[0.03]"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-mono text-xs text-neon">{m.id}</span>
+                  <span className="font-mono text-xs text-neon">{m.n}</span>
                   <span className="flex-1 font-semibold text-ink">{L(m.title)}</span>
                   <span className={`hidden items-center gap-1.5 font-mono text-[11px] sm:flex ${st.color}`}>
                     <span className={`h-1.5 w-1.5 rounded-full ${st.dot}`} />

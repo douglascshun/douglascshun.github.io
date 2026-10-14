@@ -77,6 +77,15 @@ export const timeline: TimelineItem[] = [
   },
   {
     year: '2026',
+    tag: 'edu',
+    title: { pt: 'Pós em Engenharia de Software', en: 'Postgraduate in Software Engineering' },
+    body: {
+      pt: 'Segunda pós na União das Américas: Java, dados, BI, nuvem AWS, UX/UI e gestão de projetos, com o caderno publicado sozinho no GitHub.',
+      en: 'Second postgraduate program at União das Américas: Java, data, BI, AWS cloud, UX/UI and project management, with the notebook auto-published to GitHub.',
+    },
+  },
+  {
+    year: '2026',
     tag: 'build',
     title: { pt: 'Ferramentas & automação própria', en: 'Custom tooling & automation' },
     body: {
