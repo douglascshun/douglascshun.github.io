@@ -2,7 +2,7 @@
 
 # douglascshun.github.io
 
-**Portfólio pessoal — Douglas Cshunderlick · Segurança Ofensiva / Red Team**
+**Portfólio pessoal de Douglas Cshunderlick · Segurança Ofensiva / Red Team · AppSec**
 
 Site de página única com tema *Neon + Terminal*, animações e páginas dedicadas por projeto.
 
@@ -14,11 +14,11 @@ Site de página única com tema *Neon + Terminal*, animações e páginas dedica
 
 ## Stack
 
-- **React 19 + TypeScript + Vite** — SPA moderna e rápida
-- **Tailwind CSS** — tema cyber custom (azul `#1987F0` sobre `#0d1117`)
-- **Framer Motion** — transições de página, reveal-on-scroll, hover, contadores
-- **React Router** — rotas dedicadas por projeto (`/projeto/:slug`)
-- **react-i18next** — bilíngue PT-BR / EN
+- **React 19 + TypeScript + Vite**: SPA moderna e rápida
+- **Tailwind CSS**: tema cyber custom (azul `#1987F0` sobre `#0d1117`)
+- **Framer Motion**: transições de página, reveal-on-scroll, hover, contadores
+- **React Router**: rotas dedicadas por projeto (`/projeto/:slug`)
+- **react-i18next**: bilíngue PT-BR / EN
 - Fundo animado em `<canvas>` (constelação neon) · respeita `prefers-reduced-motion`
 
 ## Estrutura
