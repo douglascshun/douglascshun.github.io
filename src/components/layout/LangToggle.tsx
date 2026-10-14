@@ -1,25 +1,25 @@
+import { motion } from 'framer-motion'
 import { useLoc } from '../../i18n/useLoc'
 
 /** Alterna PT/EN (persistido em localStorage). */
-export default function LangToggle() {
+export default function LangToggle({ id = 'lang' }: { id?: string }) {
   const { lang, setLang, t } = useLoc()
-
   return (
-    <div
-      className="flex items-center rounded-full border border-white/10 bg-white/[0.03] p-0.5 font-mono text-xs"
-      role="group"
-      aria-label={t('a11y.toggleLang')}
-    >
+    <div className="flex items-center border border-white/15 font-mono text-xs" role="group" aria-label={t('a11y.toggleLang')}>
       {(['pt', 'en'] as const).map((code) => (
         <button
           key={code}
+          type="button"
           onClick={() => setLang(code)}
           aria-pressed={lang === code}
-          className={`rounded-full px-2.5 py-1 uppercase transition-colors ${
-            lang === code ? 'bg-neon/20 text-neon-soft shadow-glow-sm' : 'text-ink-muted hover:text-ink'
+          className={`relative grid h-10 min-w-[44px] place-items-center px-2 uppercase transition-colors ${
+            lang === code ? 'text-white' : 'text-ink-muted hover:text-ink'
           }`}
         >
-          {code}
+          {lang === code && (
+            <motion.span layoutId={`${id}-pill`} className="absolute inset-0 bg-neon/25" transition={{ type: 'spring', stiffness: 500, damping: 40 }} />
+          )}
+          <span className="relative">{code}</span>
         </button>
       ))}
     </div>

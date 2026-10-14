@@ -5,25 +5,55 @@
 @layer base {
   :root {
     color-scheme: dark;
+    --nav-h: 64px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #1987f0 #0d1117;
+    scrollbar-color: #1987f0 #0a0d12;
   }
 
   html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis controla o scroll quando ativo; sem ele, o nativo suave assume. */
+  html:not(.lenis) {
     scroll-behavior: smooth;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
   }
 
   body {
-    @apply bg-base-800 text-ink font-sans antialiased;
-    overflow-x: hidden;
+    @apply bg-base-900 text-ink font-sans antialiased;
+    overflow-x: clip;
+    font-feature-settings: 'ss01', 'tnum' 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 
   ::selection {
-    background: rgba(25, 135, 240, 0.35);
+    background: rgba(25, 135, 240, 0.4);
     color: #fff;
+  }
+
+  /* Foco visível por teclado em tudo que é interativo */
+  :focus-visible {
+    outline: 2px solid #4aa3f5;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   ::-webkit-scrollbar {
@@ -34,8 +64,12 @@
     background: #0a0d12;
   }
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(#1987f0, #004b87);
+    background: #1d3a5c;
+    border: 2px solid #0a0d12;
     border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1987f0;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -51,62 +85,126 @@
 }
 
 @layer components {
-  /* Card de vidro com borda neon */
-  .glass {
-    @apply relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md;
+  /* Tipo display: Archivo expandido, a assinatura visual do site */
+  .font-display {
+    font-family: Archivo, 'IBM Plex Sans', system-ui, sans-serif;
+    font-stretch: 118%;
+    letter-spacing: -0.02em;
   }
-  .glass-hover {
-    @apply transition-all duration-300 hover:border-neon/50 hover:shadow-glow;
+  .font-display-wide {
+    font-family: Archivo, 'IBM Plex Sans', system-ui, sans-serif;
+    font-stretch: 125%;
+    letter-spacing: -0.035em;
   }
 
-  /* Texto com brilho neon (sutil, mantém nitidez) */
-  .text-glow {
-    text-shadow: 0 0 10px rgba(25, 135, 240, 0.35);
+  /* Painel: borda fina, canto reto, fundo opaco (sem vidro) */
+  .panel {
+    @apply relative border border-white/[0.09] bg-base-700/80;
   }
 
-  /* Chip / badge */
+  /* Spotlight que segue o cursor (variáveis --sx/--sy setadas via JS) */
+  .spot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      360px circle at var(--sx, 50%) var(--sy, 50%),
+      rgb(var(--spot, 25 135 240) / 0.14),
+      transparent 65%
+    );
+  }
+  .spot:hover::before,
+  .spot:focus-within::before {
+    opacity: 1;
+  }
+
+  /* Retícula: 4 cantos que "travam" no alvo no hover/foco */
+  .reticle > .rc {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    border-color: rgb(var(--spot, 25 135 240));
+    opacity: 0;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.25s ease;
+  }
+  .reticle > .rc-tl {
+    top: -1px;
+    left: -1px;
+    border-top-width: 2px;
+    border-left-width: 2px;
+    transform: translate(-6px, -6px);
+  }
+  .reticle > .rc-tr {
+    top: -1px;
+    right: -1px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    transform: translate(6px, -6px);
+  }
+  .reticle > .rc-bl {
+    bottom: -1px;
+    left: -1px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    transform: translate(-6px, 6px);
+  }
+  .reticle > .rc-br {
+    bottom: -1px;
+    right: -1px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    transform: translate(6px, 6px);
+  }
+  .reticle:hover > .rc,
+  .reticle:focus-visible > .rc,
+  .reticle:focus-within > .rc {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04]
-      px-3 py-1 font-mono text-xs text-ink-muted;
+    @apply inline-flex items-center gap-1.5 border border-white/10 px-2.5 py-1 font-mono text-xs text-ink-muted;
   }
 
-  /* Botão neon primário */
   .btn-neon {
-    @apply relative inline-flex items-center gap-2 rounded-lg border border-neon/60 bg-neon/10
-      px-5 py-2.5 font-mono text-sm font-medium text-neon-soft transition-all duration-300
-      hover:bg-neon/20 hover:shadow-glow hover:text-white;
+    @apply relative inline-flex min-h-[44px] items-center gap-2 bg-neon px-5 py-2.5 font-mono text-sm font-medium
+      text-white transition-[background-color,box-shadow,transform] duration-200
+      hover:bg-[#2b93f3] hover:shadow-glow active:translate-y-px;
   }
   .btn-ghost {
-    @apply inline-flex items-center gap-2 rounded-lg border border-white/10 px-5 py-2.5
-      font-mono text-sm text-ink-muted transition-all duration-300 hover:border-white/30 hover:text-ink;
+    @apply inline-flex min-h-[44px] items-center gap-2 border border-white/15 px-5 py-2.5 font-mono text-sm
+      text-ink transition-colors duration-200 hover:border-neon/70 hover:text-white;
   }
 
-  /* Divisor com gradiente neon */
-  .divider-neon {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(25, 135, 240, 0.6), transparent);
-  }
-
-  /* Rótulo de seção */
   .section-label {
-    @apply font-mono text-xs uppercase tracking-[0.3em] text-neon;
+    @apply font-mono text-xs tracking-wide text-neon-soft;
+  }
+
+  .link-u {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-u:hover,
+  .link-u:focus-visible {
+    background-size: 100% 1px;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-white via-neon-soft to-neon bg-clip-text text-transparent;
-  }
   .bg-scanline {
-    background-image: repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0) 0,
-      rgba(0, 0, 0, 0) 2px,
-      rgba(0, 0, 0, 0.18) 3px
-    );
+    background-image: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0, 0, 0, 0.22) 3px);
   }
   .mask-fade-b {
-    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
-    mask-image: linear-gradient(to bottom, black 70%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
+    mask-image: linear-gradient(to bottom, black 55%, transparent);
   }
 }

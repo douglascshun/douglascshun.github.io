@@ -24,12 +24,13 @@ export default {
         },
         ink: {
           DEFAULT: '#e6edf3',
-          muted: '#8b949e',
-          faint: '#586069',
+          muted: '#9aa5b1',
+          faint: '#7d8794',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        display: ['Archivo', '"IBM Plex Sans"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       boxShadow: {
@@ -58,6 +59,10 @@ export default {
         'gradient-x': {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
+        },
+        scanx: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(200%)' },
         },
         'fade-up': {
           from: { opacity: '0', transform: 'translateY(16px)' },

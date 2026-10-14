@@ -1,22 +1,30 @@
-import { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight, ExternalLink, Sparkles } from 'lucide-react'
+import { useLayoutEffect, useRef } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { GithubIcon } from '../components/icons/Brand'
 import { getProject, publicProjects } from '../data/projects'
 import { projectContent } from '../content/projects'
 import { useLoc } from '../i18n/useLoc'
 import Reveal from '../components/motion/Reveal'
+import MaskReveal from '../components/motion/MaskReveal'
+import { Corners, spotMove, spotVar } from '../components/motion/Spot'
+import { EASE, fadeUp, inView, stagger } from '../components/motion/variants'
+import { scrollToY } from '../lib/scroll'
 import NotFound from './NotFound'
 
 export default function ProjectPage() {
   const { slug = '' } = useParams()
   const { t, L } = useLoc()
+  const navigate = useNavigate()
   const project = getProject(slug)
   const content = projectContent[slug]
+  const headRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: headRef, offset: ['start start', 'end start'] })
+  const glowY = useTransform(scrollYProgress, [0, 1], ['0%', '40%'])
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'auto' })
+  useLayoutEffect(() => {
+    scrollToY(0, { immediate: true })
   }, [slug])
 
   if (!project || !content) return <NotFound />
@@ -24,108 +32,142 @@ export default function ProjectPage() {
   const idx = publicProjects.findIndex((p) => p.slug === slug)
   const next = publicProjects[(idx + 1) % publicProjects.length]
   const prev = publicProjects[(idx - 1 + publicProjects.length) % publicProjects.length]
+  const back = () => navigate('/', { state: { restore: true } })
 
   return (
-    <article className="pt-24">
-      {/* Hero do projeto */}
-      <header className="relative mx-auto max-w-5xl px-5">
-        <div
-          className="pointer-events-none absolute -top-10 left-1/2 h-64 w-[min(90%,700px)] -translate-x-1/2 rounded-full opacity-25 blur-[90px]"
-          style={{ background: project.accent }}
+    <article className="pt-28 md:pt-32" style={spotVar(project.accent)}>
+      <header ref={headRef} className="relative mx-auto max-w-6xl px-5">
+        <motion.div
+          aria-hidden
+          style={{ y: glowY, background: project.accent }}
+          className="pointer-events-none absolute -top-24 right-0 h-72 w-[min(80%,620px)] rounded-full opacity-[0.16] blur-[110px]"
         />
         <Reveal>
-          <Link to="/#projects" className="inline-flex items-center gap-1.5 font-mono text-xs text-ink-muted transition-colors hover:text-neon">
-            <ArrowLeft size={14} /> {t('projects.back')}
-          </Link>
+          <button
+            type="button"
+            onClick={back}
+            className="group inline-flex min-h-[44px] items-center gap-2 font-mono text-sm text-ink-muted transition-colors hover:text-white"
+          >
+            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" /> {t('projects.back')}
+          </button>
         </Reveal>
 
-        <Reveal delay={0.05}>
-          <div className="mt-6 flex items-center gap-3">
-            <span
-              className="rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-wider"
-              style={{ color: project.accent, borderColor: `${project.accent}55`, background: `${project.accent}12` }}
-            >
-              {L(project.category)}
-            </span>
-            <span className="font-mono text-xs text-ink-faint">{project.year}</span>
+        <div className="mt-8 grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-8">
+            <Reveal delay={0.05}>
+              <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider" style={{ color: project.accent }}>
+                <span className="h-1.5 w-1.5" style={{ background: project.accent }} />
+                {L(project.category)}
+              </p>
+            </Reveal>
+            <h1 className="mt-4 font-display-wide text-[clamp(2.4rem,7vw,5.5rem)] font-black leading-[0.95] text-ink">
+              <MaskReveal delay={0.1}>{project.title}</MaskReveal>
+            </h1>
+            <Reveal delay={0.25}>
+              <p className="mt-6 max-w-2xl text-xl leading-relaxed text-ink-muted md:text-2xl">{L(project.tagline)}</p>
+            </Reveal>
+            <Reveal delay={0.32}>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href={project.repoUrl} target="_blank" rel="noreferrer" className="btn-neon">
+                  <GithubIcon size={16} /> {t('projects.repo')}
+                </a>
+                {project.liveUrl && (
+                  <a href={project.liveUrl} target="_blank" rel="noreferrer" className="btn-ghost">
+                    live <ArrowUpRight size={16} />
+                  </a>
+                )}
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.1}>
-          <h1 className="mt-4 text-4xl font-black tracking-tight text-ink md:text-6xl">
-            {project.title}
-          </h1>
-          <p className="mt-3 max-w-2xl text-lg text-ink-muted">{L(project.tagline)}</p>
-        </Reveal>
-
-        <Reveal delay={0.15}>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.tech.map((tch) => (
-              <span key={tch} className="chip">{tch}</span>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href={project.repoUrl} target="_blank" rel="noreferrer" className="btn-neon">
-              <GithubIcon size={16} /> {t('projects.repo')}
-            </a>
-            {project.liveUrl && (
-              <a href={project.liveUrl} target="_blank" rel="noreferrer" className="btn-ghost">
-                <ExternalLink size={16} /> live
-              </a>
-            )}
-          </div>
-        </Reveal>
+          <Reveal delay={0.3} className="lg:col-span-4">
+            <dl className="border-t border-white/10 font-mono text-sm">
+              <div className="flex justify-between gap-4 border-b border-white/10 py-3">
+                <dt className="text-ink-muted">{t('ui.year')}</dt>
+                <dd className="text-ink">{project.year}</dd>
+              </div>
+              <div className="border-b border-white/10 py-3">
+                <dt className="text-ink-muted">{t('projects.stack')}</dt>
+                <dd className="mt-2 leading-relaxed text-ink">{project.tech.join(' / ')}</dd>
+              </div>
+            </dl>
+          </Reveal>
+        </div>
       </header>
 
-      {/* Métricas */}
       {content.metrics && (
-        <section className="mx-auto mt-14 max-w-5xl px-5">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <section className="mx-auto mt-20 max-w-6xl px-5">
+          <motion.dl
+            className="grid grid-cols-2 border-y border-white/10 md:grid-cols-4"
+            variants={stagger(0.08)}
+            initial="hidden"
+            whileInView="show"
+            viewport={inView}
+          >
             {content.metrics.map((m, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06, duration: 0.5 }}
-                className="glass rounded-2xl p-5 text-center"
+                variants={fadeUp}
+                className={`flex flex-col-reverse py-7 pr-4 ${i % 2 ? 'border-l border-white/10 pl-5' : ''} ${i === 2 ? 'md:border-l md:pl-5' : ''} ${
+                  i > 1 ? 'border-t border-white/10 md:border-t-0' : ''
+                }`}
               >
-                <div className="text-2xl font-extrabold" style={{ color: project.accent }}>{m.value}</div>
-                <div className="mt-1 font-mono text-[10px] uppercase tracking-wide text-ink-faint">{L(m.label)}</div>
+                <dt className="mt-2 font-mono text-[11px] uppercase tracking-wider text-ink-muted">{L(m.label)}</dt>
+                <dd className="font-display text-3xl font-extrabold md:text-4xl" style={{ color: project.accent }}>
+                  {m.value}
+                </dd>
               </motion.div>
             ))}
-          </div>
+          </motion.dl>
         </section>
       )}
 
-      {/* Visão geral */}
-      <section className="mx-auto mt-16 max-w-3xl px-5">
-        <Reveal>
-          <h2 className="section-label">{t('projects.overview')}</h2>
+      <section className="mx-auto mt-20 grid max-w-6xl gap-6 px-5 md:grid-cols-12">
+        <Reveal className="md:col-span-3">
+          <h2 className="section-label">
+            <span className="text-ink-faint">$ </span>
+            {t('projects.overview')}
+          </h2>
         </Reveal>
-        {L(content.overview).map((para, i) => (
-          <Reveal key={i} delay={0.05 * (i + 1)}>
-            <p className="mt-4 text-lg leading-relaxed text-ink-muted">{para}</p>
-          </Reveal>
-        ))}
+        <motion.div className="md:col-span-8" variants={stagger(0.08)} initial="hidden" whileInView="show" viewport={inView}>
+          {L(content.overview).map((para, i) => (
+            <motion.p
+              key={i}
+              variants={fadeUp}
+              className={`leading-relaxed ${i === 0 ? 'text-xl text-ink md:text-2xl md:leading-snug' : 'mt-5 text-lg text-ink-muted'}`}
+            >
+              {para}
+            </motion.p>
+          ))}
+        </motion.div>
       </section>
 
-      {/* Problema → solução */}
       {content.problem && (
-        <section className="mx-auto mt-16 max-w-5xl px-5">
+        <section className="mx-auto mt-24 max-w-6xl px-5">
           <Reveal>
-            <h2 className="section-label mb-6">{t('projects.problem')}</h2>
+            <h2 className="section-label mb-6">
+              <span className="text-ink-faint">$ </span>
+              {t('projects.problem')}
+            </h2>
           </Reveal>
-          <div className="space-y-3">
+          <div className="border-t border-white/10">
             {content.problem.map((row, i) => (
-              <Reveal key={i} delay={i * 0.06}>
-                <div className="glass grid items-center gap-3 rounded-2xl p-5 md:grid-cols-3">
-                  <div className="text-sm text-signal-red/90"><span className="font-mono text-[10px] uppercase text-ink-faint">problema</span><br />{L(row.challenge)}</div>
-                  <div className="text-sm text-neon-soft"><span className="font-mono text-[10px] uppercase text-ink-faint">solução</span><br />{L(row.solution)}</div>
-                  {row.benefit && <div className="text-sm text-signal-green"><span className="font-mono text-[10px] uppercase text-ink-faint">benefício</span><br />{L(row.benefit)}</div>}
+              <Reveal key={i} delay={i * 0.05}>
+                <div className="grid gap-4 border-b border-white/10 py-6 md:grid-cols-3 md:gap-8">
+                  <div>
+                    <p className="font-mono text-[11px] uppercase tracking-wider text-[#ff8a96]">{t('ui.challenge')}</p>
+                    <p className="mt-1.5 text-ink-muted">{L(row.challenge)}</p>
+                  </div>
+                  <div>
+                    <p className="font-mono text-[11px] uppercase tracking-wider text-neon-soft">{t('ui.solution')}</p>
+                    <p className="mt-1.5 text-ink">{L(row.solution)}</p>
+                  </div>
+                  {row.benefit && (
+                    <div>
+                      <p className="font-mono text-[11px] uppercase tracking-wider text-signal-green">{t('ui.benefit')}</p>
+                      <p className="mt-1.5 text-ink-muted">{L(row.benefit)}</p>
+                    </div>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -133,56 +175,76 @@ export default function ProjectPage() {
         </section>
       )}
 
-      {/* Destaques */}
-      <section className="mx-auto mt-16 max-w-5xl px-5">
+      <section className="mx-auto mt-24 max-w-6xl px-5">
         <Reveal>
-          <h2 className="section-label mb-6 flex items-center gap-2">
-            <Sparkles size={14} /> {t('projects.highlights')}
+          <h2 className="section-label mb-6">
+            <span className="text-ink-faint">$ </span>
+            {t('projects.highlights')}
           </h2>
         </Reveal>
         <div className="grid gap-4 sm:grid-cols-2">
           {content.highlights.map((h, i) => (
-            <Reveal key={i} delay={i * 0.06}>
-              <div className="glass glass-hover h-full rounded-2xl p-5">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full" style={{ background: project.accent, boxShadow: `0 0 10px ${project.accent}` }} />
-                  <h3 className="font-bold text-ink">{L(h.title)}</h3>
-                </div>
-                <p className="mt-2 text-sm text-ink-muted">{L(h.body)}</p>
-              </div>
-            </Reveal>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={inView}
+              transition={{ duration: 0.6, delay: (i % 2) * 0.08, ease: EASE }}
+              onPointerMove={spotMove}
+              className="panel spot reticle h-full p-6"
+            >
+              <Corners />
+              <h3 className="relative font-display text-lg font-bold text-ink">{L(h.title)}</h3>
+              <p className="relative mt-2 leading-relaxed text-ink-muted">{L(h.body)}</p>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Seções extras */}
       {content.sections?.map((sec, i) => (
-        <section key={i} className="mx-auto mt-16 max-w-3xl px-5">
-          <Reveal>
-            <h2 className="text-xl font-bold text-ink">{L(sec.title)}</h2>
+        <section key={i} className="mx-auto mt-20 grid max-w-6xl gap-6 px-5 md:grid-cols-12">
+          <Reveal className="md:col-span-3">
+            <h2 className="font-display text-xl font-bold text-ink">{L(sec.title)}</h2>
           </Reveal>
-          {L(sec.body).map((para, j) => (
-            <Reveal key={j} delay={0.05 * (j + 1)}>
-              <p className="mt-3 flex gap-2 text-ink-muted">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: project.accent }} />
+          <ul className="space-y-3 md:col-span-8">
+            {L(sec.body).map((para, j) => (
+              <Reveal as="li" key={j} delay={0.04 * j} className="flex gap-3 leading-relaxed text-ink-muted">
+                <span className="mt-2.5 h-1.5 w-1.5 shrink-0" style={{ background: project.accent }} aria-hidden />
                 {para}
-              </p>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
+          </ul>
         </section>
       ))}
 
-      {/* Navegação prev/next */}
-      <nav className="mx-auto mt-20 max-w-5xl px-5">
-        <div className="divider-neon mb-6" />
-        <div className="flex items-center justify-between gap-4">
-          <Link to={`/projeto/${prev.slug}`} className="btn-ghost">
-            <ArrowLeft size={15} /> <span className="hidden sm:inline">{prev.title}</span><span className="sm:hidden">{t('projects.prev')}</span>
-          </Link>
-          <Link to="/#projects" className="font-mono text-xs text-ink-muted hover:text-neon">{t('projects.back')}</Link>
-          <Link to={`/projeto/${next.slug}`} className="btn-ghost">
-            <span className="hidden sm:inline">{next.title}</span><span className="sm:hidden">{t('projects.next')}</span> <ArrowRight size={15} />
-          </Link>
+      <nav aria-label={t('ui.moreProjects')} className="mx-auto mt-28 max-w-6xl px-5">
+        <div className="grid border-t border-white/10 sm:grid-cols-2">
+          {[
+            { p: prev, dir: 'prev' as const },
+            { p: next, dir: 'next' as const },
+          ].map(({ p, dir }) => (
+            <Link
+              key={dir}
+              to={`/projeto/${p.slug}`}
+              onPointerMove={spotMove}
+              style={spotVar(p.accent)}
+              className={`spot group relative flex min-h-[140px] flex-col justify-center gap-2 border-b border-white/10 px-2 py-8 sm:px-6 ${
+                dir === 'next' ? 'sm:items-end sm:border-l sm:text-right' : ''
+              }`}
+            >
+              <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-ink-muted">
+                {dir === 'prev' && <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />}
+                {t(`projects.${dir}`)}
+                {dir === 'next' && <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />}
+              </span>
+              <span className="font-display text-2xl font-extrabold text-ink transition-colors group-hover:text-white md:text-3xl">{p.title}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="flex justify-center py-10">
+          <button type="button" onClick={back} className="btn-ghost">
+            <ArrowLeft size={15} /> {t('projects.back')}
+          </button>
         </div>
       </nav>
     </article>

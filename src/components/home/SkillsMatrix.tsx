@@ -2,43 +2,63 @@ import { motion } from 'framer-motion'
 import { useLoc } from '../../i18n/useLoc'
 import { skillGroups } from '../../data/skills'
 import Section from '../layout/Section'
-import Reveal from '../motion/Reveal'
+import { Corners, spotMove, spotVar } from '../motion/Spot'
+import { EASE, inView } from '../motion/variants'
+
+/** Barra segmentada estilo medidor de terminal; preenche ao entrar na tela. */
+const SEG = 'repeating-linear-gradient(90deg, #000 0 7px, transparent 7px 9px)'
 
 export default function SkillsMatrix() {
   const { t, L } = useLoc()
 
   return (
     <Section id="skills" label={t('section.skillsLabel')} title={t('section.skillsTitle')}>
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         {skillGroups.map((g, gi) => (
-          <Reveal key={g.key} delay={gi * 0.08}>
-            <div className="glass glass-hover h-full rounded-2xl p-6">
-              <div className="mb-5 flex items-center gap-2.5">
-                <span className="h-3 w-3 rounded-sm" style={{ background: g.accent, boxShadow: `0 0 12px ${g.accent}` }} />
-                <h3 className="font-bold text-ink">{L(g.title)}</h3>
-              </div>
-              <div className="space-y-3.5">
-                {g.skills.map((s, si) => (
-                  <div key={s.name}>
-                    <div className="mb-1 flex items-center justify-between font-mono text-xs">
-                      <span className="text-ink-muted">{s.name}</span>
-                      <span style={{ color: g.accent }}>{s.level}%</span>
-                    </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-white/5">
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{ background: `linear-gradient(90deg, ${g.accent}, ${g.accent}99)`, boxShadow: `0 0 10px ${g.accent}88` }}
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${s.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.9, delay: 0.1 + si * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                      />
-                    </div>
+          <motion.div
+            key={g.key}
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={inView}
+            transition={{ duration: 0.7, delay: (gi % 2) * 0.1, ease: EASE }}
+            onPointerMove={spotMove}
+            style={spotVar(g.accent)}
+            className="panel spot reticle p-6 md:p-7"
+          >
+            <Corners />
+            <h3 className="relative flex items-center justify-between font-display text-lg font-bold text-ink">
+              {L(g.title)}
+              <span className="h-2 w-2" style={{ background: g.accent }} aria-hidden />
+            </h3>
+            <ul className="relative mt-6 space-y-4">
+              {g.skills.map((s, si) => (
+                <li key={s.name}>
+                  <div className="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[12.5px]">
+                    <span className="text-ink-muted">{s.name}</span>
+                    <span className="tabular-nums text-ink">{s.level}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
+                  <div
+                    className="relative h-2"
+                    role="meter"
+                    aria-valuenow={s.level}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={s.name}
+                  >
+                    <span className="absolute inset-0 bg-white/[0.07]" style={{ maskImage: SEG, WebkitMaskImage: SEG }} />
+                    <motion.span
+                      className="absolute inset-y-0 left-0 origin-left"
+                      style={{ width: `${s.level}%`, background: g.accent, maskImage: SEG, WebkitMaskImage: SEG }}
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, delay: 0.15 + si * 0.07, ease: EASE }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         ))}
       </div>
     </Section>

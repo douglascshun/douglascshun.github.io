@@ -4,17 +4,22 @@ import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { Project } from '../../data/projects'
 import { useLoc } from '../../i18n/useLoc'
+import { Corners, spotMove, spotVar } from '../motion/Spot'
+import { EASE, inView } from '../motion/variants'
 
-export default function ProjectCard({ project, index }: { project: Project; index: number }) {
+type Props = { project: Project; index: number; featured?: boolean; className?: string }
+
+export default function ProjectCard({ project, index, featured, className }: Props) {
   const { t, L } = useLoc()
   const reduce = useReducedMotion()
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
-  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 })
-  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 })
+  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [3, -3]), { stiffness: 220, damping: 22 })
+  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-3, 3]), { stiffness: 220, damping: 22 })
 
   const onMove = (e: PointerEvent<HTMLElement>) => {
-    if (reduce) return
+    spotMove(e)
+    if (reduce || e.pointerType !== 'mouse') return
     const r = e.currentTarget.getBoundingClientRect()
     mx.set((e.clientX - r.left) / r.width - 0.5)
     my.set((e.clientY - r.top) / r.height - 0.5)
@@ -26,59 +31,58 @@ export default function ProjectCard({ project, index }: { project: Project; inde
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      style={{ rotateX, rotateY, transformPerspective: 1000 }}
+      viewport={inView}
+      transition={{ duration: 0.7, delay: (index % 3) * 0.09, ease: EASE }}
+      style={{ rotateX, rotateY, transformPerspective: 1200, ...spotVar(project.accent) }}
       onPointerMove={onMove}
       onPointerLeave={reset}
-      className="group relative [transform-style:preserve-3d]"
+      className={`group relative ${className ?? ''}`}
     >
       <Link
         to={`/projeto/${project.slug}`}
-        className="glass block h-full overflow-hidden rounded-2xl p-6 transition-all duration-300 hover:border-white/20"
-        style={{ boxShadow: 'none' }}
+        className={`panel spot reticle flex h-full flex-col overflow-hidden transition-colors duration-300 hover:border-white/20 ${
+          featured ? 'min-h-[340px] p-7 md:p-9' : 'min-h-[300px] p-6'
+        }`}
       >
-        {/* glow accent */}
-        <div
-          className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-40"
+        <Corners />
+        <span
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-[0.18] transition-transform duration-500 ease-out group-hover:scale-x-100"
           style={{ background: project.accent }}
         />
-        <div className="relative flex items-center justify-between">
-          <span
-            className="rounded-full border px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider"
-            style={{ color: project.accent, borderColor: `${project.accent}55`, background: `${project.accent}12` }}
-          >
+        <div className="relative flex items-center justify-between font-mono text-[11px] uppercase tracking-wider">
+          <span className="flex items-center gap-2" style={{ color: project.accent }}>
+            <span className="h-1.5 w-1.5" style={{ background: project.accent }} />
             {L(project.category)}
           </span>
-          <span className="font-mono text-[11px] text-ink-faint">{project.year}</span>
+          <span className="text-ink-muted">{project.year}</span>
         </div>
 
-        <h3 className="relative mt-5 text-xl font-bold text-ink transition-colors group-hover:text-white">
+        <h3
+          className={`relative mt-8 font-display font-extrabold leading-[1.02] text-ink transition-colors group-hover:text-white ${
+            featured ? 'text-3xl md:text-[2.6rem]' : 'text-2xl'
+          }`}
+        >
           {project.title}
         </h3>
-        <p className="relative mt-2 text-sm text-ink-muted">{L(project.tagline)}</p>
+        <p className={`relative mt-3 text-ink-muted ${featured ? 'max-w-md text-lg' : 'text-[15px]'}`}>{L(project.tagline)}</p>
+        {featured && <p className="relative mt-3 max-w-lg text-[15px] leading-relaxed text-ink-faint">{L(project.summary)}</p>}
 
-        <div className="relative mt-4 flex flex-wrap gap-1.5">
-          {project.tech.slice(0, 4).map((tch) => (
-            <span key={tch} className="chip">
-              {tch}
-            </span>
-          ))}
-          {project.tech.length > 4 && <span className="chip">+{project.tech.length - 4}</span>}
+        <div className="relative mt-auto pt-8">
+          <p className="font-mono text-[12px] leading-relaxed text-ink-muted">
+            {project.tech.slice(0, featured ? 6 : 4).join(' / ')}
+            {!featured && project.tech.length > 4 && <span className="text-ink-faint"> +{project.tech.length - 4}</span>}
+          </p>
+          <div className="mt-5 flex items-center justify-between border-t border-white/[0.08] pt-4 font-mono text-xs">
+            <span className="text-ink transition-colors group-hover:text-white">{t('projects.open')}</span>
+            <ArrowUpRight
+              size={18}
+              className="text-ink-muted transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white"
+            />
+          </div>
         </div>
-
-        <div className="relative mt-6 flex items-center gap-1.5 font-mono text-xs text-neon-soft">
-          {t('projects.open')}
-          <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </div>
-
-        {/* underline accent on hover */}
-        <span
-          className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-          style={{ background: `linear-gradient(90deg, ${project.accent}, transparent)` }}
-        />
       </Link>
     </motion.article>
   )

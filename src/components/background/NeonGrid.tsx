@@ -1,110 +1,56 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 
-type Dot = { x: number; y: number; vx: number; vy: number }
-
-/** Fundo animado: grade neon estática + partículas conectadas em canvas +
- *  glow radial que segue o mouse. Leve e respeita reduced-motion. */
+/** Fundo: grade de engenharia com parallax leve no scroll, brilho que segue
+ *  o cursor e vinheta. Sem canvas: custo quase zero de CPU. */
 export default function NeonGrid() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
-
-  useEffect(() => {
-    const glow = glowRef.current
-    const onMove = (e: PointerEvent) => {
-      if (!glow) return
-      glow.style.setProperty('--mx', `${e.clientX}px`)
-      glow.style.setProperty('--my', `${e.clientY}px`)
-    }
-    window.addEventListener('pointermove', onMove)
-    return () => window.removeEventListener('pointermove', onMove)
-  }, [])
+  const { scrollY } = useScroll()
+  const gridY = useTransform(scrollY, (v) => `${reduce ? 0 : -(v * 0.12) % 48}px`)
 
   useEffect(() => {
     if (reduce) return
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
+    const fine = window.matchMedia('(pointer: fine)').matches
+    if (!fine) return
+    const glow = glowRef.current
     let raf = 0
-    let dots: Dot[] = []
-    let w = 0
-    let h = 0
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      w = canvas.clientWidth
-      h = canvas.clientHeight
-      canvas.width = w * dpr
-      canvas.height = h * dpr
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const target = Math.min(90, Math.floor((w * h) / 20000))
-      dots = Array.from({ length: target }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: (Math.random() - 0.5) * 0.35,
-      }))
+    const onMove = (e: PointerEvent) => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        glow?.style.setProperty('--mx', `${e.clientX}px`)
+        glow?.style.setProperty('--my', `${e.clientY}px`)
+      })
     }
-
-    const tick = () => {
-      ctx.clearRect(0, 0, w, h)
-      for (const d of dots) {
-        d.x += d.vx
-        d.y += d.vy
-        if (d.x < 0 || d.x > w) d.vx *= -1
-        if (d.y < 0 || d.y > h) d.vy *= -1
-      }
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const a = dots[i]
-          const b = dots[j]
-          const dx = a.x - b.x
-          const dy = a.y - b.y
-          const dist = Math.hypot(dx, dy)
-          if (dist < 130) {
-            ctx.strokeStyle = `rgba(25,135,240,${(1 - dist / 130) * 0.28})`
-            ctx.lineWidth = 1
-            ctx.beginPath()
-            ctx.moveTo(a.x, a.y)
-            ctx.lineTo(b.x, b.y)
-            ctx.stroke()
-          }
-        }
-      }
-      for (const d of dots) {
-        ctx.fillStyle = 'rgba(74,163,245,0.75)'
-        ctx.beginPath()
-        ctx.arc(d.x, d.y, 1.4, 0, Math.PI * 2)
-        ctx.fill()
-      }
-      raf = requestAnimationFrame(tick)
-    }
-
-    resize()
-    tick()
-    window.addEventListener('resize', resize)
+    window.addEventListener('pointermove', onMove, { passive: true })
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('pointermove', onMove)
     }
   }, [reduce])
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-base-800">
-      <div className="absolute inset-0 bg-grid bg-[length:44px_44px] opacity-[0.4] mask-fade-b" />
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-base-900">
+      <motion.div
+        className="absolute -inset-y-12 inset-x-0"
+        style={{
+          backgroundPositionY: gridY,
+          backgroundImage:
+            'linear-gradient(rgba(25,135,240,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(25,135,240,0.06) 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+          maskImage: 'radial-gradient(ellipse 90% 70% at 30% 20%, black 30%, transparent 80%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 30% 20%, black 30%, transparent 80%)',
+        }}
+      />
       <div
         ref={glowRef}
         className="absolute inset-0"
         style={{
-          background:
-            'radial-gradient(520px circle at var(--mx,50%) var(--my,30%), rgba(25,135,240,0.10), transparent 60%)',
+          background: 'radial-gradient(480px circle at var(--mx,20%) var(--my,10%), rgba(25,135,240,0.08), transparent 60%)',
         }}
       />
-      <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-neon/10 to-transparent" />
+      <div className="absolute -left-40 -top-40 h-[520px] w-[720px] rounded-full bg-neon/[0.07] blur-[120px]" />
+      <div className="absolute inset-0 bg-scanline opacity-40" />
     </div>
   )
 }
