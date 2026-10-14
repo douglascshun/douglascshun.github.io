@@ -21,9 +21,9 @@ export const profile = {
   } as Loc<string[]>,
   stats: [
     { value: 6, suffix: '%', label: { pt: 'Top TryHackMe', en: 'Top TryHackMe' } as Loc },
-    { value: 4, suffix: '+', label: { pt: 'Projetos públicos', en: 'Public projects' } as Loc },
+    { value: 5, suffix: '', label: { pt: 'Projetos públicos', en: 'Public projects' } as Loc },
     { value: 256, suffix: '+', label: { pt: 'Aulas documentadas', en: 'Lessons documented' } as Loc },
-    { value: 10, suffix: '+', label: { pt: 'Certificações', en: 'Certifications' } as Loc },
+    { value: 34, suffix: '', label: { pt: 'Certificações', en: 'Certifications' } as Loc },
   ],
   contacts: [
     { kind: 'github', label: { pt: 'GitHub', en: 'GitHub' } as Loc, value: '@douglascshun', href: 'https://github.com/douglascshun' },
