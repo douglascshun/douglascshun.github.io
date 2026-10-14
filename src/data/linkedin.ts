@@ -22,6 +22,16 @@ export type LinkedInPost = {
 /** Mais recente primeiro. */
 export const linkedinPosts: LinkedInPost[] = [
   {
+    url: post('7516219933094158336'),
+    date: '2026-10-14',
+    title: { pt: 'Rodei um pentest em mim mesmo', en: 'I ran a pentest on myself' },
+    excerpt: {
+      pt: 'Escopo: os últimos 12 meses. 34 certificações, diploma de ADS, TCC do MBA entregue, a segunda pós em andamento, Top 6% no TryHackMe e o CTIwatch.cloud.',
+      en: 'Scope: the last 12 months. 34 certifications, my systems degree, MBA thesis delivered, a second postgraduate program underway, Top 6% on TryHackMe and CTIwatch.cloud.',
+    },
+    tags: ['Carreira', 'RedTeam', 'AppSec'],
+  },
+  {
     url: post('7505759827617361920'),
     date: '2026-09-15',
     title: { pt: 'MBA em Segurança da Informação: resumo do meu TCC entregue', en: 'MBA in Information Security: my thesis summary, delivered' },
