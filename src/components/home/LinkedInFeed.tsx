@@ -48,7 +48,7 @@ export default function LinkedInFeed() {
 
       <Reveal className="mt-6 flex justify-center">
         <a href={linkedinProfile} target="_blank" rel="noreferrer" className="btn-neon">
-          <LinkedinIcon size={16} /> @douglas-cshunderlick
+          <LinkedinIcon size={16} /> @cshunderlick
         </a>
       </Reveal>
     </Section>

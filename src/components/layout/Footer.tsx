@@ -18,10 +18,10 @@ export default function Footer() {
           <a href="https://github.com/douglascshun" target="_blank" rel="noreferrer" className="text-ink-muted transition-colors hover:text-neon" aria-label="GitHub">
             <GithubIcon size={18} />
           </a>
-          <a href="https://www.linkedin.com/in/douglas-cshunderlick/" target="_blank" rel="noreferrer" className="text-ink-muted transition-colors hover:text-neon" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/cshunderlick/" target="_blank" rel="noreferrer" className="text-ink-muted transition-colors hover:text-neon" aria-label="LinkedIn">
             <LinkedinIcon size={18} />
           </a>
-          <a href="mailto:douglascshun@gmail.com" className="text-ink-muted transition-colors hover:text-neon" aria-label="Email">
+          <a href="mailto:douglascshunderlick@gmail.com" className="text-ink-muted transition-colors hover:text-neon" aria-label="Email">
             <Mail size={18} />
           </a>
         </div>

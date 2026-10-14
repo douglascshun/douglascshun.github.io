@@ -24,12 +24,12 @@ export const projects: Project[] = [
     repo: 'automacao-linkedin',
     title: 'Automação de LinkedIn',
     tagline: {
-      pt: 'Do Markdown à publicação — 100% autônomo, sem servidor',
-      en: 'From Markdown to publish — 100% autonomous, serverless',
+      pt: 'Do Markdown à publicação: 100% autônomo, sem servidor',
+      en: 'From Markdown to publish: 100% autonomous, serverless',
     },
     summary: {
-      pt: 'Bot que reescreve anotações .md com IA (Gemini), gera capa por IA com fallback em cascata e publica na LinkedIn API — tudo no GitHub Actions.',
-      en: 'Bot that rewrites .md notes with AI (Gemini), generates AI covers with a fallback cascade and posts via the LinkedIn API — all on GitHub Actions.',
+      pt: 'Bot que reescreve anotações .md com IA (Gemini), gera capa por IA com fallback em cascata e publica na LinkedIn API, tudo no GitHub Actions.',
+      en: 'Bot that rewrites .md notes with AI (Gemini), generates AI covers with a fallback cascade and posts via the LinkedIn API, all on GitHub Actions.',
     },
     tech: ['Python', 'GitHub Actions', 'Gemini', 'LinkedIn API', 'Pollinations', 'Pillow'],
     repoUrl: 'https://github.com/douglascshun/automacao-linkedin',

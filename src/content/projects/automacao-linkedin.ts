@@ -3,11 +3,11 @@ import type { ProjectContent } from './types'
 export const automacaoLinkedin: ProjectContent = {
   overview: {
     pt: [
-      'Um sistema que publica um post por dia no LinkedIn de forma totalmente autônoma, direto do GitHub Actions — sem servidor, sem custo de infraestrutura e sem intervenção manual.',
+      'Um sistema que publica um post por dia no LinkedIn de forma totalmente autônoma, direto do GitHub Actions, sem servidor, sem custo de infraestrutura e sem intervenção manual.',
       'Ele pega anotações em Markdown, reescreve o texto com IA (Google Gemini) num tom profissional em pt-BR, gera uma imagem de capa por IA e publica pela API oficial do LinkedIn. O motor é genérico: aponte para qualquer pasta de .md e ele vira uma fila de posts.',
     ],
     en: [
-      'A system that publishes one LinkedIn post per day fully autonomously, straight from GitHub Actions — no server, no infra cost, no manual work.',
+      'A system that publishes one LinkedIn post per day fully autonomously, straight from GitHub Actions: no server, no infra cost, no manual work.',
       'It takes Markdown notes, rewrites the text with AI (Google Gemini) in a professional tone, generates an AI cover image and posts through the official LinkedIn API. The engine is generic: point it at any folder of .md files and it becomes a post queue.',
     ],
   },
@@ -21,8 +21,8 @@ export const automacaoLinkedin: ProjectContent = {
     {
       title: { pt: 'Reescrita com IA', en: 'AI rewriting' },
       body: {
-        pt: 'O Gemini transforma a anotação num post de LinkedIn — prompt que força pt-BR, remove markdown/emojis e a "cara de IA".',
-        en: 'Gemini turns the note into a LinkedIn post — a prompt that enforces pt-BR and strips markdown/emojis and the "AI look".',
+        pt: 'O Gemini transforma a anotação num post de LinkedIn, com um prompt que força pt-BR, remove markdown/emojis e a "cara de IA".',
+        en: 'Gemini turns the note into a LinkedIn post, with a prompt that enforces pt-BR and strips markdown/emojis and the "AI look".',
       },
     },
     {
@@ -42,8 +42,8 @@ export const automacaoLinkedin: ProjectContent = {
     {
       title: { pt: 'Estado versionado', en: 'Versioned state' },
       body: {
-        pt: 'post_index.txt guarda o índice do próximo post; avança a cada publicação e é commitado pelo próprio workflow — impossível dessincronizar.',
-        en: 'post_index.txt tracks the next post; it advances on each publish and is committed by the workflow itself — impossible to desync.',
+        pt: 'post_index.txt guarda o índice do próximo post; avança a cada publicação e é commitado pelo próprio workflow. Impossível dessincronizar.',
+        en: 'post_index.txt tracks the next post; it advances on each publish and is committed by the workflow itself. Impossible to desync.',
       },
     },
     {
@@ -56,8 +56,8 @@ export const automacaoLinkedin: ProjectContent = {
     {
       title: { pt: 'Modo dry-run', en: 'Dry-run mode' },
       body: {
-        pt: 'Monta o post inteiro (texto + imagem + payload) e não publica — para validar com segurança antes de ir ao ar.',
-        en: 'Assembles the whole post (text + image + payload) without publishing — to validate safely before going live.',
+        pt: 'Monta o post inteiro (texto + imagem + payload) e não publica, para validar com segurança antes de ir ao ar.',
+        en: 'Assembles the whole post (text + image + payload) without publishing, to validate safely before going live.',
       },
     },
   ],

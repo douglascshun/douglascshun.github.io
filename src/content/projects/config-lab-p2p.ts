@@ -3,12 +3,12 @@ import type { ProjectContent } from './types'
 export const configLabP2P: ProjectContent = {
   overview: {
     pt: [
-      'Um cyber range dedicado, isolado e monitorado — montado para eliminar práticas manuais e inseguras do dia a dia de laboratório.',
-      'Implementa um link Ponto a Ponto (P2P) isolado, montagem persistente via SSHFS com chaves, firewall UFW restritivo e monitoramento integral com Wazuh — incluindo visibilidade do próprio Manager.',
+      'Um cyber range dedicado, isolado e monitorado, montado para eliminar práticas manuais e inseguras do dia a dia de laboratório.',
+      'Implementa um link Ponto a Ponto (P2P) isolado, montagem persistente via SSHFS com chaves, firewall UFW restritivo e monitoramento integral com Wazuh, incluindo visibilidade do próprio Manager.',
     ],
     en: [
-      'A dedicated, isolated and monitored cyber range — built to remove manual, insecure day-to-day lab practices.',
-      'It implements an isolated Point-to-Point (P2P) link, key-based persistent SSHFS mounts, a strict UFW firewall and full Wazuh monitoring — including visibility of the Manager itself.',
+      'A dedicated, isolated and monitored cyber range, built to remove manual, insecure day-to-day lab practices.',
+      'It implements an isolated Point-to-Point (P2P) link, key-based persistent SSHFS mounts, a strict UFW firewall and full Wazuh monitoring, including visibility of the Manager itself.',
     ],
   },
   metrics: [
@@ -45,8 +45,8 @@ export const configLabP2P: ProjectContent = {
     {
       title: { pt: 'SSHFS persistente', en: 'Persistent SSHFS' },
       body: {
-        pt: 'Acesso transparente aos arquivos remotos, montado por chave — fim do scp/sftp manual.',
-        en: 'Transparent access to remote files, key-mounted — no more manual scp/sftp.',
+        pt: 'Acesso transparente aos arquivos remotos, montado por chave. Fim do scp/sftp manual.',
+        en: 'Transparent access to remote files, key-mounted. No more manual scp/sftp.',
       },
     },
     {
@@ -69,12 +69,12 @@ export const configLabP2P: ProjectContent = {
       title: { pt: 'Arquitetura', en: 'Architecture' },
       body: {
         pt: [
-          'Servidor (Manager) — Wazuh Manager + Dashboard + ambiente de trabalho · IP ex. 10.10.10.1 · Kali/Debian.',
-          'Notebook (Agent) — máquina do analista/pentester · IP ex. 10.10.10.2 · Kali/Debian.',
+          'Servidor (Manager): Wazuh Manager + Dashboard + ambiente de trabalho · IP ex. 10.10.10.1 · Kali/Debian.',
+          'Notebook (Agent): máquina do analista/pentester · IP ex. 10.10.10.2 · Kali/Debian.',
         ],
         en: [
-          'Server (Manager) — Wazuh Manager + Dashboard + workspace · e.g. IP 10.10.10.1 · Kali/Debian.',
-          'Laptop (Agent) — analyst/pentester machine · e.g. IP 10.10.10.2 · Kali/Debian.',
+          'Server (Manager): Wazuh Manager + Dashboard + workspace · e.g. IP 10.10.10.1 · Kali/Debian.',
+          'Laptop (Agent): analyst/pentester machine · e.g. IP 10.10.10.2 · Kali/Debian.',
         ],
       },
     },

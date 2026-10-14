@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ComponentType } from 'react'
-import { Check, Copy, Crosshair, Mail } from 'lucide-react'
+import { Briefcase, Check, Copy, Crosshair, Mail, MessageCircle } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '../icons/Brand'
 import { useLoc } from '../../i18n/useLoc'
 import { profile } from '../../data/profile'
@@ -12,6 +12,8 @@ const icons: Record<string, ComponentType<{ size?: number }>> = {
   linkedin: LinkedinIcon,
   tryhackme: Crosshair,
   email: Mail,
+  whatsapp: MessageCircle,
+  services: Briefcase,
 }
 
 export default function Contact() {
@@ -20,7 +22,7 @@ export default function Contact() {
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText('douglascshun@gmail.com')
+      await navigator.clipboard.writeText('douglascshunderlick@gmail.com')
       setCopied(true)
       setTimeout(() => setCopied(false), 1600)
     } catch {

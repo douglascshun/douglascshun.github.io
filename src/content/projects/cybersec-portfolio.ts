@@ -4,11 +4,11 @@ export const cybersecPortfolio: ProjectContent = {
   overview: {
     pt: [
       'Portfólio prático de pentest: relatórios profissionais de testes de invasão conduzidos em ambientes legais e autorizados (TryHackMe, HackTheBox, labs próprios).',
-      'Cada relatório traz documentação completa — reconhecimento, exploração, prova de conceito (PoC) e recomendações de hardening — seguindo metodologias reconhecidas (OSSTMM, OWASP).',
+      'Cada relatório traz documentação completa (reconhecimento, exploração, prova de conceito (PoC) e recomendações de hardening), seguindo metodologias reconhecidas (OSSTMM, OWASP).',
     ],
     en: [
       'Hands-on pentest portfolio: professional penetration-test reports run in legal, authorized environments (TryHackMe, HackTheBox, own labs).',
-      'Each report brings full documentation — recon, exploitation, proof of concept (PoC) and hardening recommendations — following recognized methodologies (OSSTMM, OWASP).',
+      'Each report brings full documentation (recon, exploitation, proof of concept (PoC) and hardening recommendations), following recognized methodologies (OSSTMM, OWASP).',
     ],
   },
   metrics: [
@@ -35,8 +35,8 @@ export const cybersecPortfolio: ProjectContent = {
     {
       title: { pt: 'Relatórios profissionais', en: 'Professional reports' },
       body: {
-        pt: 'Documentação executiva com PoC reproduzível e recomendações de correção — do achado ao hardening.',
-        en: 'Executive documentation with reproducible PoC and remediation guidance — from finding to hardening.',
+        pt: 'Documentação executiva com PoC reproduzível e recomendações de correção, do achado ao hardening.',
+        en: 'Executive documentation with reproducible PoC and remediation guidance, from finding to hardening.',
       },
     },
     {
@@ -52,12 +52,12 @@ export const cybersecPortfolio: ProjectContent = {
       title: { pt: 'Máquinas comprometidas', en: 'Compromised machines' },
       body: {
         pt: [
-          'Poster (TryHackMe · média) — root em ~1h40 via CVE-2019-9193, credenciais padrão do PostgreSQL e sudo NOPASSWD.',
-          'Meow (HackTheBox · fácil) — root em ~45min via login Telnet direto e misconfiguração do Alpine.',
+          'Poster (TryHackMe · média): root em ~1h40 via CVE-2019-9193, credenciais padrão do PostgreSQL e sudo NOPASSWD.',
+          'Meow (HackTheBox · fácil): root em ~45min via login Telnet direto e misconfiguração do Alpine.',
         ],
         en: [
-          'Poster (TryHackMe · medium) — root in ~1h40 via CVE-2019-9193, default PostgreSQL credentials and sudo NOPASSWD.',
-          'Meow (HackTheBox · easy) — root in ~45min via direct Telnet login and Alpine misconfiguration.',
+          'Poster (TryHackMe · medium): root in ~1h40 via CVE-2019-9193, default PostgreSQL credentials and sudo NOPASSWD.',
+          'Meow (HackTheBox · easy): root in ~45min via direct Telnet login and Alpine misconfiguration.',
         ],
       },
     },

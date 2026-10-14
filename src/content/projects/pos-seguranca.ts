@@ -4,11 +4,11 @@ export const posSeguranca: ProjectContent = {
   overview: {
     pt: [
       'Repositório central de estudos do MBA em Segurança da Informação: resumos técnicos, mapas mentais e documentação prática, organizados em 4 módulos.',
-      'Funciona como base de consulta rápida para o dia a dia profissional — da comunicação de dados às operações avançadas de segurança, sempre alinhado a frameworks reais (ISO/ABNT, NIST, CERT, OWASP, LGPD/GDPR).',
+      'Funciona como base de consulta rápida para o dia a dia profissional, da comunicação de dados às operações avançadas de segurança, sempre alinhado a frameworks reais (ISO/ABNT, NIST, CERT, OWASP, LGPD/GDPR).',
     ],
     en: [
       'Central knowledge base from the MBA in Information Security: technical summaries, mind maps and practical docs, organized into 4 modules.',
-      'It serves as a quick reference for daily professional work — from data communication to advanced security operations, always aligned with real frameworks (ISO/ABNT, NIST, CERT, OWASP, LGPD/GDPR).',
+      'It serves as a quick reference for daily professional work, from data communication to advanced security operations, always aligned with real frameworks (ISO/ABNT, NIST, CERT, OWASP, LGPD/GDPR).',
     ],
   },
   metrics: [
@@ -52,14 +52,14 @@ export const posSeguranca: ProjectContent = {
       title: { pt: 'Trilha dos módulos', en: 'Module track' },
       body: {
         pt: [
-          'Módulo 1 (concluído) — Networking, Cybersecurity Essentials, Endpoint Security, Network Defense.',
-          'Módulos 2 e 3 (em progresso) — Cloud Security, Threat Management, CyberOps, Network Security, CSIRT, IoT, Privacy & Data Governance.',
-          'Módulo 4 (a iniciar) — Tópicos Especiais, Carreira e Atualidades.',
+          'Módulo 1 (concluído): Networking, Cybersecurity Essentials, Endpoint Security, Network Defense.',
+          'Módulos 2 e 3 (em progresso): Cloud Security, Threat Management, CyberOps, Network Security, CSIRT, IoT, Privacy & Data Governance.',
+          'Módulo 4 (a iniciar): Tópicos Especiais, Carreira e Atualidades.',
         ],
         en: [
-          'Module 1 (done) — Networking, Cybersecurity Essentials, Endpoint Security, Network Defense.',
-          'Modules 2 and 3 (in progress) — Cloud Security, Threat Management, CyberOps, Network Security, CSIRT, IoT, Privacy & Data Governance.',
-          'Module 4 (upcoming) — Special Topics, Career and Current Affairs.',
+          'Module 1 (done): Networking, Cybersecurity Essentials, Endpoint Security, Network Defense.',
+          'Modules 2 and 3 (in progress): Cloud Security, Threat Management, CyberOps, Network Security, CSIRT, IoT, Privacy & Data Governance.',
+          'Module 4 (upcoming): Special Topics, Career and Current Affairs.',
         ],
       },
     },

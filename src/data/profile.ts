@@ -6,16 +6,16 @@ export const profile = {
   alias: 'r4bbi7',
   avatar: 'https://github.com/douglascshun.png',
   role: {
-    pt: 'Analista de Segurança Ofensiva · Red Team',
-    en: 'Offensive Security Analyst · Red Team',
+    pt: 'Engenheiro de Software · Segurança Ofensiva / Red Team · AppSec',
+    en: 'Software Engineer · Offensive Security / Red Team · AppSec',
   } as Loc,
   bio: {
     pt: [
-      'Engenheiro de software voltado para Segurança Ofensiva e Governança. Atuo em pentests autorizados, análise de vulnerabilidades e desenvolvimento de ferramentas próprias — unindo mentalidade Red Team com defesa em profundidade.',
+      'Engenheiro de software voltado para Segurança Ofensiva e Governança. Atuo em pentests autorizados, análise de vulnerabilidades e desenvolvimento de ferramentas próprias, unindo mentalidade Red Team com defesa em profundidade.',
       'Top 6% no ranking global do TryHackMe e em preparação para o OSCP. Gosto de automatizar o tedioso, documentar o achado e transformar conhecimento técnico em conteúdo que a comunidade usa.',
     ],
     en: [
-      'Software engineer focused on Offensive Security and Governance. I run authorized pentests, vulnerability analysis and build custom tooling — pairing a Red Team mindset with defense in depth.',
+      'Software engineer focused on Offensive Security and Governance. I run authorized pentests, vulnerability analysis and build custom tooling, pairing a Red Team mindset with defense in depth.',
       'Top 6% on TryHackMe worldwide and preparing for the OSCP. I automate the tedious, document the finding, and turn technical knowledge into content the community actually uses.',
     ],
   } as Loc<string[]>,
@@ -30,11 +30,13 @@ export const profile = {
     {
       kind: 'linkedin',
       label: 'LinkedIn',
-      value: 'douglas-cshunderlick',
-      href: 'https://www.linkedin.com/in/douglas-cshunderlick/',
+      value: 'cshunderlick',
+      href: 'https://www.linkedin.com/in/cshunderlick/',
     },
     { kind: 'tryhackme', label: 'TryHackMe', value: 'D.r4bbi7', href: 'https://tryhackme.com/p/D.r4bbi7' },
-    { kind: 'email', label: 'Email', value: 'douglascshun@gmail.com', href: 'mailto:douglascshun@gmail.com' },
+    { kind: 'email', label: 'Email', value: 'douglascshunderlick@gmail.com', href: 'mailto:douglascshunderlick@gmail.com' },
+    { kind: 'whatsapp', label: 'WhatsApp', value: '(12) 98237-1002', href: 'https://wa.me/5512982371002' },
+    { kind: 'services', label: 'Serviços', value: 'site-servicos.douglascshunderlick.workers.dev', href: 'https://site-servicos.douglascshunderlick.workers.dev' },
   ],
 }
 
@@ -69,8 +71,8 @@ export const timeline: TimelineItem[] = [
     tag: 'edu',
     title: { pt: 'MBA em Segurança da Informação', en: 'MBA in Information Security' },
     body: {
-      pt: 'Pós-graduação cobrindo do networking à governança (LGPD/GDPR), CyberOps, CSIRT, Cloud e IoT security. Módulos 1–3 concluídos.',
-      en: 'Graduate program spanning networking to governance (LGPD/GDPR), CyberOps, CSIRT, Cloud and IoT security. Modules 1–3 completed.',
+      pt: 'Pós-graduação cobrindo do networking à governança (LGPD/GDPR), CyberOps, CSIRT, Cloud e IoT security. Módulos 1-3 concluídos.',
+      en: 'Graduate program spanning networking to governance (LGPD/GDPR), CyberOps, CSIRT, Cloud and IoT security. Modules 1-3 completed.',
     },
   },
   {
