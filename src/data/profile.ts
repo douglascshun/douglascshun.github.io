@@ -26,17 +26,17 @@ export const profile = {
     { value: 10, suffix: '+', label: { pt: 'Certificações', en: 'Certifications' } as Loc },
   ],
   contacts: [
-    { kind: 'github', label: 'GitHub', value: '@douglascshun', href: 'https://github.com/douglascshun' },
+    { kind: 'github', label: { pt: 'GitHub', en: 'GitHub' } as Loc, value: '@douglascshun', href: 'https://github.com/douglascshun' },
     {
       kind: 'linkedin',
-      label: 'LinkedIn',
+      label: { pt: 'LinkedIn', en: 'LinkedIn' } as Loc,
       value: 'cshunderlick',
       href: 'https://www.linkedin.com/in/cshunderlick/',
     },
-    { kind: 'tryhackme', label: 'TryHackMe', value: 'D.r4bbi7', href: 'https://tryhackme.com/p/D.r4bbi7' },
-    { kind: 'email', label: 'Email', value: 'douglascshunderlick@gmail.com', href: 'mailto:douglascshunderlick@gmail.com' },
-    { kind: 'whatsapp', label: 'WhatsApp', value: '(12) 98237-1002', href: 'https://wa.me/5512982371002' },
-    { kind: 'services', label: 'Serviços', value: 'site-servicos.douglascshunderlick.workers.dev', href: 'https://site-servicos.douglascshunderlick.workers.dev' },
+    { kind: 'tryhackme', label: { pt: 'TryHackMe', en: 'TryHackMe' } as Loc, value: 'D.r4bbi7', href: 'https://tryhackme.com/p/D.r4bbi7' },
+    { kind: 'email', label: { pt: 'E-mail', en: 'Email' } as Loc, value: 'douglascshunderlick@gmail.com', href: 'mailto:douglascshunderlick@gmail.com' },
+    { kind: 'whatsapp', label: { pt: 'WhatsApp', en: 'WhatsApp' } as Loc, value: '(12) 98237-1002', href: 'https://wa.me/5512982371002' },
+    { kind: 'services', label: { pt: 'Serviços', en: 'Services' } as Loc, value: 'site-servicos.douglascshunderlick.workers.dev', href: 'https://site-servicos.douglascshunderlick.workers.dev' },
   ],
 }
 

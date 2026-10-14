@@ -17,7 +17,7 @@ const icons: Record<string, ComponentType<{ size?: number }>> = {
 }
 
 export default function Contact() {
-  const { t } = useLoc()
+  const { t, L } = useLoc()
   const [copied, setCopied] = useState(false)
 
   const copyEmail = async () => {
@@ -47,7 +47,7 @@ export default function Contact() {
                   <Icon size={18} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="font-mono text-[11px] uppercase tracking-wide text-ink-faint">{c.label}</div>
+                  <div className="font-mono text-[11px] uppercase tracking-wide text-ink-faint">{L(c.label)}</div>
                   <div className="truncate font-medium text-ink">{c.value}</div>
                 </div>
                 {c.kind === 'email' && (
