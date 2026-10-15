@@ -20,12 +20,16 @@ const CYBRARY = 'Cybrary'
 const CISA = 'CISA'
 const credly = (id: string) => `https://www.credly.com/badges/${id}`
 const CYBRARY_PERFIL = 'https://app.cybrary.it/profile/DevelopedCondor7752'
+// Fallback: certificados sem credencial pública (ex.: micro-certs da Uniamérica,
+// que no LinkedIn têm só a imagem) apontam para a seção de certificados do perfil.
+// O LinkedIn não expõe URL pública por item, então este é o destino possível.
+const LINKEDIN_CERTS = 'https://www.linkedin.com/in/cshunderlick/details/certifications/'
 
 /** Fonte: LinkedIn > Licenças e certificados (34 itens, conferido em 14/10/2026).
  *  Ordem: em andamento, depois mais recente primeiro (a ordenação é feita aqui embaixo). */
 const lista: Cert[] = [
   { name: 'OSCP', issuer: 'OffSec', status: 'progress', note: { pt: 'Em preparação', en: 'In preparation' } },
-  { name: 'TryHackMe · Top 6%', issuer: 'TryHackMe', status: 'done', note: { pt: 'Ranking global', en: 'Global ranking' } },
+  { name: 'TryHackMe · Top 6%', issuer: 'TryHackMe', status: 'done', url: 'https://tryhackme.com/p/D.r4bbi7', note: { pt: 'Ranking global', en: 'Global ranking' } },
 
   // Pós em Segurança da Informação (Uniamérica)
   { name: 'Data Mapping and Privacy Governance', issuer: UNI, issued: '2026-05', status: 'done', note: MICRO },
@@ -76,10 +80,14 @@ const lista: Cert[] = [
   { name: 'Reconnaissance and Enumeration Basics', issuer: CYBRARY, issued: '2024-09', status: 'done', url: CYBRARY_PERFIL },
 ]
 
-export const certifications: Cert[] = [...lista].sort((a, b) => {
-  if (a.status !== b.status) return a.status === 'progress' ? -1 : 1
-  return (b.issued ?? '9999').localeCompare(a.issued ?? '9999')
-})
+export const certifications: Cert[] = [...lista]
+  // Certificado concluído sem credencial própria cai na seção de certificados do LinkedIn.
+  // Em andamento (ex.: OSCP) fica sem link, porque ainda não há credencial.
+  .map((c) => (c.url || c.status === 'progress' ? c : { ...c, url: LINKEDIN_CERTS }))
+  .sort((a, b) => {
+    if (a.status !== b.status) return a.status === 'progress' ? -1 : 1
+    return (b.issued ?? '9999').localeCompare(a.issued ?? '9999')
+  })
 
 /** Emissores na ordem em que aparecem nos filtros (mais certificados primeiro). */
 export const issuers: string[] = Object.entries(
